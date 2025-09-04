@@ -1,0 +1,31 @@
+namespace: umair
+
+userprofile:
+  replicas: 2
+  name: usernode-js
+  image:
+    repository: dockerimageyour
+    tag: latest
+  port: 3130
+  env:
+    MONGODB_URI: "mongodb://mongodb:27017/myDatabase"
+    SESSION_SECRET: "1234"
+    EMAIL_USER: "chagantyteja2502@gmail.com"
+    EMAIL_PASS: "yxoq bjuk rdnt alzp"
+    PORT: "3130"
+  service:
+    port: 3130
+    type: LoadBalancer
+
+mongodb:
+  replicas: 1
+  name: mongodb
+  image:
+    repository: mongo
+    tag: latest
+  port: 27017
+  env:
+    MONGO_INITDB_DATABASE: "myDatabase"
+  service:
+    port: 27017
+    type: ClusterIP

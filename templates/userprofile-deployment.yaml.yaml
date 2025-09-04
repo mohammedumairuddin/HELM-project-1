@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Release.Name }}-userprofile
+  namespace: {{ .Values.namespace }}
+spec:
+  replicas: {{ .Values.userprofile.replicas }}
+  selector:
+    matchLabels:
+      app: {{ .Values.labels.app }}
+  template:
+    metadata:
+      matchLabels:
+      app: {{ .Values.labels.app }}
+    spec:
+      containers:
+        - name: {{ .Values.userprofile.name }}
+          image: "{{ .Values.userprofile.image.repository }}:{{ .Values.userprofile.image.tag }}"
+          ports:
+            - containerPort: {{ .Values.userprofile.port }}
+          env:
+            - name: MONGODB_URI
+              value: {{ .secrets.userprofile.env.MONGODB_URI | quote }}
+            - name: SESSION_SECRET
+              value: {{ .secrets.userprofile.env.SESSION_SECRET | quote }}
+            - name: EMAIL_USER
+              value: {{ .secrets.userprofile.env.EMAIL_USER | quote }}
+            - name: EMAIL_PASS
+              value: {{ .secrets.userprofile.env.EMAIL_PASS | quote }}
+            - name: PORT
+              value: {{ .secrets.userprofile.env.PORT | quote }}
